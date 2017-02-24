@@ -1,0 +1,315 @@
+///////////////////////////////////////////////////////////////////////////////
+/// \file	C:\Users\Chris\Documents\GitHub\Vulkanic\src\Engine\VECamera.h
+///
+/// \brief	Declares the ve camera class.
+///////////////////////////////////////////////////////////////////////////////
+
+#pragma once
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <vector>
+#include "VEGameObject.h"
+
+///////////////////////////////////////////////////////////////////////////////
+/// \namespace	VE
+///
+/// \brief	.
+///////////////////////////////////////////////////////////////////////////////
+
+namespace VE
+{
+	///////////////////////////////////////////////////////////////////////////
+	/// \class	Camera
+	///
+	/// \brief	The camera.
+	///
+	/// \author	Chris
+	/// \date	14-2-2017
+	///////////////////////////////////////////////////////////////////////////
+
+	class Camera : public GameObject
+	{
+	public:
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	Camera::Camera();
+		///
+		/// \brief	Default constructor.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///////////////////////////////////////////////////////////////////////
+
+		Camera();
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	Camera::~Camera();
+		///
+		/// \brief	Destructor.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///////////////////////////////////////////////////////////////////////
+
+		~Camera();
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	glm::vec3 Camera::getPosition() const;
+		///
+		/// \brief	Gets the position.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \return	The position.
+		///////////////////////////////////////////////////////////////////////
+
+		glm::vec3 getPosition() const override;
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	void Camera::setPosition(const glm::vec3& pos);
+		///
+		/// \brief	Sets a position.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \param	pos	The position.
+		///////////////////////////////////////////////////////////////////////
+
+		void setPosition(const glm::vec3& pos);
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	glm::vec3 Camera::getRight() const;
+		///
+		/// \brief	Gets the right.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \return	The right.
+		///////////////////////////////////////////////////////////////////////
+
+		glm::vec3 getRight() const;
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	glm::vec3 Camera::getUp() const;
+		///
+		/// \brief	Gets the up.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \return	The up.
+		///////////////////////////////////////////////////////////////////////
+
+		glm::vec3 getUp() const;
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	glm::vec3 Camera::getLook() const;
+		///
+		/// \brief	Gets the look.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \return	The look.
+		///////////////////////////////////////////////////////////////////////
+
+		glm::vec3 getLook() const;
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	float Camera::getNearZ() const;
+		///
+		/// \brief	Gets near z coordinate.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \return	The near z coordinate.
+		///////////////////////////////////////////////////////////////////////
+
+		float getNearZ() const;
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	float Camera::getFarZ() const;
+		///
+		/// \brief	Gets far z coordinate.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \return	The far z coordinate.
+		///////////////////////////////////////////////////////////////////////
+
+		float getFarZ() const;
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	float Camera::getAspectRatio() const;
+		///
+		/// \brief	Gets aspect ratio.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \return	The aspect ratio.
+		///////////////////////////////////////////////////////////////////////
+
+		float getAspectRatio() const;
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	float Camera::getFoV() const;
+		///
+		/// \brief	Gets the field of view.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \return	The field of view.
+		///////////////////////////////////////////////////////////////////////
+
+		float getFoV() const;
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	void Camera::setLens(float FoV, float aspectRatio, float nearZ, float farZ);
+		///
+		/// \brief	Sets the lens.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \param	FoV		   	The field of view.
+		/// \param	aspectRatio	The aspect ratio.
+		/// \param	nearZ	   	The near z coordinate.
+		/// \param	farZ	   	The far z coordinate.
+		///////////////////////////////////////////////////////////////////////
+
+		void setLens(float FoV, float aspectRatio, float nearZ, float farZ);
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	glm::mat4x4 Camera::getViewMatrix() const;
+		///
+		/// \brief	Gets view matrix.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \return	The view matrix.
+		///////////////////////////////////////////////////////////////////////
+
+		glm::mat4x4 getViewMatrix() const;
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	glm::mat4x4 Camera::getProjectionMatrix() const;
+		///
+		/// \brief	Gets projection matrix.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \return	The projection matrix.
+		///////////////////////////////////////////////////////////////////////
+
+		glm::mat4x4 getProjectionMatrix() const;
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	void Camera::Rotate(glm::vec3 rotation);
+		///
+		/// \brief	Rotates the camera the given rotation.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \param	rotation	The rotation.
+		///////////////////////////////////////////////////////////////////////
+
+		void Rotate(glm::vec3 rotation) override;
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	void Camera::MoveBy(glm::vec3 movement);
+		///
+		/// \brief	Move the camera in world space.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \param	movement	The movement.
+		///////////////////////////////////////////////////////////////////////
+
+		void MoveBy(glm::vec3 movement, bool local = true) override;
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	void Camera::UpdateViewMatrix();
+		///
+		/// \brief	Updates the view matrix.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///////////////////////////////////////////////////////////////////////
+
+		void UpdateViewMatrix();
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	static Camera* Camera::getCamera();
+		///
+		/// \brief	Gets the camera.
+		///
+		/// \author	Chris
+		/// \date	14-2-2017
+		///
+		/// \return	The camera.
+		///////////////////////////////////////////////////////////////////////
+
+		static Camera* getCamera();
+
+	private:
+		/// \brief	The right.
+		glm::vec3 right = {1.0f, 0.0f, 0.0f};
+		/// \brief	The up.
+		glm::vec3 up = {0.0f, 1.0f, 0.0f};
+		/// \brief	The look.
+		glm::vec3 look = {0.0f, 0.0f, 1.0f};
+		/// \brief	The near z coordinate.
+		float nearZ = 0.0f;
+		/// \brief	The far z coordinate.
+		float farZ = 0.0f;
+		/// \brief	The aspect ratio.
+		float aspectRatio = 0.0f;
+		/// \brief	The field of view.
+		float fov = 0.0f;
+		/// \brief	The view matrix.
+		glm::mat4x4 viewMatrix = glm::mat4();
+		/// \brief	The projection matrix.
+		glm::mat4x4 projectionMatrix = glm::mat4();
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	void Camera::Strafe(float d);
+		///
+		/// \brief	Strafes.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \param	d	The distance/speed to strafe.
+		///////////////////////////////////////////////////////////////////////
+
+		void Strafe(float d);
+
+		///////////////////////////////////////////////////////////////////////
+		/// \fn	void Camera::Walk(float d);
+		///
+		/// \brief	Walks.
+		///
+		/// \author	Chris
+		/// \date	24-2-2017
+		///
+		/// \param	d	The distance/speed to walk.
+		///////////////////////////////////////////////////////////////////////
+
+		void Walk(float d);
+		/// \brief	The camera.
+		static Camera* camera;
+	};
+}
