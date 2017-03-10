@@ -1,5 +1,6 @@
 #include "Mesh.h"
 #include <unordered_map>
+#include "tiny_obj_loader.h"
 
 
 Mesh::Mesh(std::string filepath, float scale)

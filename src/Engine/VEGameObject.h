@@ -1,5 +1,5 @@
 #pragma once
-#include "../tinyvk.h"
+#include "tinyvk.h"
 #include <glm/glm.hpp>
 
 namespace VE
@@ -26,10 +26,10 @@ namespace VE
 		/// \brief	The position.
 		glm::vec3 position = {0.0f, 0.0f, 1.0f};
 		///////////////////////////////////////////////////////////////////////
-				/// \property	float pitch, yaw, roll
-				///
-				/// \brief	The rotation axis
-				///////////////////////////////////////////////////////////////////////
+		/// \property	float pitch, yaw, roll
+		///
+		/// \brief	The rotation axis
+		///////////////////////////////////////////////////////////////////////
 
 		float pitch, yaw, roll;
 	};

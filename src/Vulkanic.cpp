@@ -10,6 +10,7 @@
 #include "Engine/VECamera.h"
 #include "Engine/VETexturedPlane.h"
 #include "Engine/VE3dmodel.h"
+#include "Engine/VESceneManager.h"
 #include <sstream>
 #include <iostream>
 
@@ -22,7 +23,7 @@ uint32_t            s_window_height;
 
 VE::Camera*         camera = nullptr;
 VE::TexturedPlane*  plane = nullptr;
-VE::DModel*          model = nullptr;
+VE::DModel*         model = nullptr;
 
 using namespace VE;
 
@@ -143,12 +144,20 @@ void VEngine::InitializeEngine(GLFWwindow* window)
 	tr_create_cmd_pool(m_renderer, m_renderer->graphics_queue, false, &m_cmd_pool);
 	tr_create_cmd_n(m_cmd_pool, false, kImageCount, &m_cmds);
 
-	m_camera = new Camera();
-	m_camera->setPosition({0.0f, 0.0f, 3.0f});
+	camera = new Camera();
+	camera->setPosition({0.0f, 0.0f, 3.0f});
 	plane = new TexturedPlane(m_renderer, m_cmds);
 	plane->Create("assets/box_panel.jpg");
 	model = new DModel(m_renderer);
 	model->Create("assets/teapot.obj", 0.005f);
+
+	smngr = new SceneManager();
+	Scene* s = new Scene();
+	s->addObject(plane);
+	s->addObject(model);
+	smngr->addScene(s, "s");
+	//hoeft niet
+	smngr->setCurrentScene(s);
 
 	l_renderer = m_renderer;
 	l_cmd_pool = m_cmd_pool;
@@ -193,8 +202,9 @@ void draw_frame()
 	tr_clear_value clear_value = {0.0f, 0.0f, 0.0f, 0.0f};
 	tr_cmd_clear_color_attachment(cmd, 0, &clear_value);
 
-	plane->Draw(cmd);
-	model->Draw(cmd);
+	//plane->Draw(cmd);
+	//model->Draw(cmd);
+	VEngine::getEngine()->getSceneManager()->getCurrentScene()->Draw(cmd);
 
 	tr_cmd_end_render(cmd);
 
@@ -208,16 +218,19 @@ void draw_frame()
 	tr_queue_wait_idle(l_renderer->graphics_queue);
 }
 
+VEngine* engine;
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
-		
+	if(key == GLFW_KEY_W && action == GLFW_PRESS)
+	{
+		engine->getCamera()->MoveBy(glm::vec3(0, 0, 1));
+	}
 }
-
-VEngine* engine;
 
 double oldMouseX, oldMouseY;
 
@@ -229,6 +242,7 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
+	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 	GLFWwindow* window = glfwCreateWindow(1280, 720, "VULKANIC", nullptr, nullptr);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 

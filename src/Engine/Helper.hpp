@@ -9,13 +9,14 @@
 #include <fstream>
 #include <vector>
 
-#include "../stb_image.h"
+#include "stb_image.h"
 
 #include <vulkan/vulkan.h>
-#include "../tinyvk.h"
+#include "tinyvk.h"
 
 #include "VECamera.h"
 #include "VETexturedPlane.h"
+#include "VESceneManager.h"
 
 #pragma comment(lib, "glfw3.lib")
 
@@ -33,29 +34,32 @@ namespace VE
 
 		static VEngine* getEngine()
 		{
-			static VEngine* m_engine;
-			if(m_engine == nullptr)
+			static VEngine* engine;
+			if(engine == nullptr)
 			{
-				m_engine = new VEngine();
+				engine = new VEngine();
 			}
-			return m_engine;
+			return engine;
 		}
 
 		//void setRenderer(tr_renderer* renderer) { e_renderer = renderer; }
 
-		Camera* getCamera() { return m_camera; }
+		Camera* getCamera() { return camera; }
+		SceneManager* getSceneManager() { return smngr; }
 		tr_renderer* getRenderer() { return m_renderer; }
 		tr_cmd_pool* getCmdPool() { return m_cmd_pool; }
 		tr_cmd** getCmds() { return m_cmds; }
 		uint64_t getFrameCount() { return s_frame_count; }
 
 	private:
-		Camera* m_camera = nullptr;
+		Camera* camera = nullptr;
 		tr_renderer* m_renderer = nullptr;
 		tr_cmd_pool*	m_cmd_pool = nullptr;
 		tr_cmd**		m_cmds = nullptr;
 		uint64_t     s_frame_count = 0;
-		static VEngine* m_engine;
+		static VEngine* engine;
+
+		SceneManager* smngr = nullptr;
 	};
 
 	//structs

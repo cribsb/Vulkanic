@@ -1,6 +1,5 @@
 #pragma once
 #include "Helper.hpp"
-#include "utils/tiny_obj_loader.h"
 
 class Mesh
 {
