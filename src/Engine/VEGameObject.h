@@ -31,7 +31,7 @@ namespace VE
 		/// \brief	The rotation axis
 		///////////////////////////////////////////////////////////////////////
 
-		float pitch, yaw, roll;
+		float pitch = 0.0f, yaw = 0.0f, roll = 0.0f;
 	};
 	inline GameObject::~GameObject()
 	{

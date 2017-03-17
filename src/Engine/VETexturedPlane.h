@@ -11,7 +11,7 @@ namespace VE
 	class TexturedPlane : public GameObject
 	{
 	public:
-		TexturedPlane(tr_renderer* renderer, tr_cmd** cmds);
+		TexturedPlane();
 		~TexturedPlane();
 
 		void Create(std::string texturePath);

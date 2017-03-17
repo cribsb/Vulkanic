@@ -5,9 +5,9 @@
 
 namespace VE
 {
-	DModel::DModel(tr_renderer* renderer)
+	DModel::DModel()
 	{
-		m_renderer = renderer;
+		m_renderer = VEngine::getEngine()->getRenderer();
 	}
 
 	DModel::~DModel()
@@ -105,6 +105,7 @@ namespace VE
 
 	void DModel::setProgram(tr_shader_program program)
 	{
+		shader_program = program;
 	}
 
 	void DModel::Destroy()

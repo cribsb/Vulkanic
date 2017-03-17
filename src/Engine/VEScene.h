@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "VEGameObject.h"
+#include "Helper.hpp"
 
 namespace VE
 {

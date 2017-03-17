@@ -17,8 +17,13 @@
 #include "VECamera.h"
 #include "VETexturedPlane.h"
 #include "VESceneManager.h"
+#include "VEInput.h"
+#include "VEGame.h"
 
 #pragma comment(lib, "glfw3.lib")
+
+class SceneManager;
+class Input;
 
 namespace VE
 {
@@ -42,14 +47,14 @@ namespace VE
 			return engine;
 		}
 
-		//void setRenderer(tr_renderer* renderer) { e_renderer = renderer; }
-
-		Camera* getCamera() { return camera; }
-		SceneManager* getSceneManager() { return smngr; }
-		tr_renderer* getRenderer() { return m_renderer; }
-		tr_cmd_pool* getCmdPool() { return m_cmd_pool; }
-		tr_cmd** getCmds() { return m_cmds; }
-		uint64_t getFrameCount() { return s_frame_count; }
+		Camera* getCamera() const { return camera; }
+		SceneManager* getSceneManager() const { return scene_manager; }
+		Input* getInput() const { return input; }
+		tr_renderer* getRenderer() const { return m_renderer; }
+		tr_cmd_pool* getCmdPool() const { return m_cmd_pool; }
+		tr_cmd** getCmds() const { return m_cmds; }
+		uint64_t getFrameCount() const { return s_frame_count; }
+		Game* getGame() const { return game; }
 
 	private:
 		Camera* camera = nullptr;
@@ -59,7 +64,9 @@ namespace VE
 		uint64_t     s_frame_count = 0;
 		static VEngine* engine;
 
-		SceneManager* smngr = nullptr;
+		Input* input = nullptr;
+		SceneManager* scene_manager = nullptr;
+		Game* game = nullptr;
 	};
 
 	//structs

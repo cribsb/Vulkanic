@@ -3,6 +3,8 @@
 #include "VEScene.h"
 #include <map>
 
+class Scene;
+
 namespace VE
 {
 	class SceneManager
@@ -21,6 +23,6 @@ namespace VE
 
 	private:
 		std::map<std::string, Scene*> scenes;
-		Scene* currentScene = nullptr;
+		Scene* current_scene = nullptr;
 	};
 }

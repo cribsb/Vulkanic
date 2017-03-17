@@ -5,10 +5,11 @@
 
 namespace VE
 {
-	TexturedPlane::TexturedPlane(tr_renderer* renderer, tr_cmd** cmds)
+	TexturedPlane::TexturedPlane()
 	{
-		m_renderer = renderer;
-		m_cmds = cmds;
+		m_cmds = VEngine::getEngine()->getCmds();
+		m_renderer = VEngine::getEngine()->getRenderer();
+
 		cam = VEngine::getEngine()->getCamera();
 	}
 

@@ -13,17 +13,19 @@
 #include "Engine/VESceneManager.h"
 #include <sstream>
 #include <iostream>
+#include "Engine/VEGame.h"
+#include "Engine/Example/example.h"
 
 const uint32_t kImageCount = 3;
 tr_renderer*        l_renderer = nullptr;
 tr_cmd_pool*        l_cmd_pool = nullptr;
-tr_cmd**            l_cmds = nullptr;
+tr_cmd**            l_cmds     = nullptr;
 uint32_t            s_window_width;
 uint32_t            s_window_height;
 
 VE::Camera*         camera = nullptr;
-VE::TexturedPlane*  plane = nullptr;
-VE::DModel*         model = nullptr;
+VE::TexturedPlane*  plane  = nullptr;
+VE::DModel*         model  = nullptr;
 
 using namespace VE;
 
@@ -98,7 +100,7 @@ void VEngine::InitializeEngine(GLFWwindow* window)
 {
 	std::vector<const char*> instance_layers = {
 #if defined(_DEBUG)
-		"VK_LAYER_LUNARG_api_dump",
+		//"VK_LAYER_LUNARG_api_dump",
 		"VK_LAYER_LUNARG_core_validation",
 		"VK_LAYER_LUNARG_swapchain",
 		"VK_LAYER_LUNARG_image",
@@ -108,7 +110,7 @@ void VEngine::InitializeEngine(GLFWwindow* window)
 
 	std::vector<const char*> device_layers = {
 #if defined(_DEBUG)
-		"VK_LAYER_LUNARG_api_dump",
+		//"VK_LAYER_LUNARG_api_dump",
 		"VK_LAYER_LUNARG_core_validation",
 		"VK_LAYER_LUNARG_swapchain",
 		"VK_LAYER_LUNARG_image",
@@ -144,24 +146,26 @@ void VEngine::InitializeEngine(GLFWwindow* window)
 	tr_create_cmd_pool(m_renderer, m_renderer->graphics_queue, false, &m_cmd_pool);
 	tr_create_cmd_n(m_cmd_pool, false, kImageCount, &m_cmds);
 
-	camera = new Camera();
-	camera->setPosition({0.0f, 0.0f, 3.0f});
-	plane = new TexturedPlane(m_renderer, m_cmds);
-	plane->Create("assets/box_panel.jpg");
-	model = new DModel(m_renderer);
-	model->Create("assets/teapot.obj", 0.005f);
-
-	smngr = new SceneManager();
-	Scene* s = new Scene();
-	s->addObject(plane);
-	s->addObject(model);
-	smngr->addScene(s, "s");
-	//hoeft niet
-	smngr->setCurrentScene(s);
-
 	l_renderer = m_renderer;
 	l_cmd_pool = m_cmd_pool;
 	l_cmds = m_cmds;
+
+	camera = new Camera();
+	camera->setPosition({0.0f, 0.0f, 3.0f});
+	//plane = new TexturedPlane();
+	//plane->Create("assets/box_panel.jpg");
+	//model = new DModel();
+	//model->Create("assets/teapot.obj", 0.005f);
+
+	input = new Input(window);
+
+	scene_manager = new SceneManager();
+	//Scene* s = new Scene();
+	//s->addObject(plane);
+	//s->addObject(model);
+	//scene_manager->addScene(s, "startscene");
+	//hoeft niet
+	//scene_manager->setCurrentScene(s);
 }
 
 void destroy_tiny_renderer()
@@ -172,6 +176,8 @@ void destroy_tiny_renderer()
 void Update()
 {
 	//VEngine::getEngine()->getCamera()->Update();
+	game->Update();
+	//VEngine::getEngine()->getSceneManager()->getCurrentScene()->Update();
 }
 
 void draw_frame()
@@ -248,8 +254,11 @@ int main(int argc, char **argv)
 
 	engine = VEngine::getEngine();
 	engine->InitializeEngine(window);
+	game = new ExampleGame();
+	game->Create();
+	game->Initialize();
 
-	glfwSetKeyCallback(window, key_callback);
+	//glfwSetKeyCallback(window, key_callback);
 	auto mouseCallback = [](GLFWwindow* window, double xpos, double ypos)
 	{
 		engine->getCamera()->Rotate(glm::vec3(0.01f*(xpos-oldMouseX), 0.01f*(ypos-oldMouseY), 0.0f));

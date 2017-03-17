@@ -13,19 +13,19 @@ namespace VE
 
 	void SceneManager::setCurrentScene(Scene* scene)
 	{
-		currentScene = scene;
+		current_scene = scene;
 	}
 
 	void SceneManager::setCurrentScene(std::string name)
 	{
-		currentScene = scenes.at(name);
+		current_scene = scenes.at(name);
 	}
 
 	Scene* SceneManager::getCurrentScene() const
 	{
-		if(currentScene != nullptr)
+		if(current_scene != nullptr)
 		{
-			return currentScene;
+			return current_scene;
 		}
 		else
 		{
@@ -45,6 +45,6 @@ namespace VE
 
 	void SceneManager::addScene(Scene* scene, std::string name)
 	{
-		scenes.insert({name, scene});
+		scenes[name] = scene;
 	}
 }

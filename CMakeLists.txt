@@ -18,9 +18,9 @@ src/*.hpp
 src/Engine/*.cpp
 src/Engine/*.hpp
 src/Engine/*.h
-src/Engine/utils/*.cpp
-src/Engine/utils/*.hpp
-src/Engine/utils/*.h
+src/Engine/Example/*.cpp
+src/Engine/Example/*.hpp
+src/Engine/Example/*.h
 include/*.hpp
 include/*.h
 include/*.cpp

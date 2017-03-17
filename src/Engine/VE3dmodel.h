@@ -12,7 +12,7 @@ namespace VE
 	class DModel : public GameObject
 	{
 	public:
-		DModel(tr_renderer* renderer);
+		DModel();
 		~DModel();
 
 		void Create(std::string modelPath, float scale = 1.0f);
@@ -34,6 +34,6 @@ namespace VE
 		tr_buffer* m_uniform_buffer = nullptr;
 		tr_renderer* m_renderer = nullptr;
 
-		Camera* cam;
+		Camera* cam = nullptr;
 	};
 }
