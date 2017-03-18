@@ -16,16 +16,18 @@
 #include "Engine/VEGame.h"
 #include "Engine/Example/example.h"
 
-const uint32_t kImageCount = 3;
-tr_renderer*        l_renderer = nullptr;
-tr_cmd_pool*        l_cmd_pool = nullptr;
-tr_cmd**            l_cmds     = nullptr;
+const uint32_t      kImageCount = 3;
+tr_renderer*        l_renderer  = nullptr;
+tr_cmd_pool*        l_cmd_pool  = nullptr;
+tr_cmd**            l_cmds      = nullptr;
+GLFWwindow*         window      = nullptr;
 uint32_t            s_window_width;
-uint32_t            s_window_height;
+uint32_t            s_window_height; 
 
 VE::Camera*         camera = nullptr;
 VE::TexturedPlane*  plane  = nullptr;
 VE::DModel*         model  = nullptr;
+VE::Game*           game   = nullptr;
 
 using namespace VE;
 
@@ -168,21 +170,25 @@ void VEngine::InitializeEngine(GLFWwindow* window)
 	//scene_manager->setCurrentScene(s);
 }
 
+void VEngine::Quit()
+{
+	glfwSetWindowShouldClose(window, GLFW_TRUE);
+}
+
 void destroy_tiny_renderer()
 {
 	tr_destroy_renderer(l_renderer);
 }
 
-void Update()
+void Update(float dt)
 {
 	//VEngine::getEngine()->getCamera()->Update();
-	game->Update();
-	//VEngine::getEngine()->getSceneManager()->getCurrentScene()->Update();
+	VEngine::getEngine()->getSceneManager()->getCurrentScene()->Update(dt);
 }
 
-void draw_frame()
+void draw_frame(float dt)
 {
-	Update();
+	Update(dt);
 
 	uint32_t frameIdx = VEngine::getEngine()->getFrameCount() % l_renderer->settings.swapchain.image_count;
 
@@ -210,7 +216,7 @@ void draw_frame()
 
 	//plane->Draw(cmd);
 	//model->Draw(cmd);
-	VEngine::getEngine()->getSceneManager()->getCurrentScene()->Draw(cmd);
+	VEngine::getEngine()->getSceneManager()->getCurrentScene()->Draw(cmd, dt);
 
 	tr_cmd_end_render(cmd);
 
@@ -226,18 +232,6 @@ void draw_frame()
 
 VEngine* engine;
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-	{
-		glfwSetWindowShouldClose(window, GLFW_TRUE);
-	}
-	if(key == GLFW_KEY_W && action == GLFW_PRESS)
-	{
-		engine->getCamera()->MoveBy(glm::vec3(0, 0, 1));
-	}
-}
-
 double oldMouseX, oldMouseY;
 
 int main(int argc, char **argv)
@@ -249,7 +243,7 @@ int main(int argc, char **argv)
 	}
 
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "VULKANIC", nullptr, nullptr);
+	window = glfwCreateWindow(1280, 720, "VULKANIC", nullptr, nullptr);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	engine = VEngine::getEngine();
@@ -265,42 +259,31 @@ int main(int argc, char **argv)
 		glfwGetCursorPos(window, &oldMouseX, &oldMouseY);
 	};
 
-	auto mouseButtonCallback = [](GLFWwindow* window, int button, int action, int mods)
-	{
-		if(button == GLFW_MOUSE_BUTTON_1 && action == action == GLFW_PRESS)
-		{
-			engine->getCamera()->MoveBy(glm::vec3(0.f, 0.f, 0.1f));
-		}
-		if(button == GLFW_MOUSE_BUTTON_2 && action == action == GLFW_PRESS)
-		{
-			engine->getCamera()->MoveBy(glm::vec3(0.f, 0.f, -0.1f));
-		}
-	};
-
 	glfwSetCursorPosCallback(window, mouseCallback);
-	glfwSetMouseButtonCallback(window, mouseButtonCallback);
 	glfwGetCursorPos(window, &oldMouseX, &oldMouseY);
 	
 	// The fps stuff;
 	int    frames;
-	double fps, time, t0;
+	double fps, currentFrame, lastFrame, deltaTime;
 	char   title[150];
+	currentFrame = glfwGetTime();
+	lastFrame = currentFrame;
 	frames = 0;
-	t0 = glfwGetTime();
 
 	while(!glfwWindowShouldClose(window))
 	{
-		time = glfwGetTime();
-		if((time - t0) > 1.0 || frames == 0)
+		currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+		if((currentFrame - lastFrame) > 1.0 || frames == 0)
 		{
-			fps = static_cast<double>(frames) / (time - t0);
+			fps = static_cast<double>(frames) / (deltaTime);
 			sprintf_s(title, "VULKANIC ALPHA (%.1f FPS)", fps);
 			glfwSetWindowTitle(window, title);
-			t0 = time;
 			frames = 0;
 		}
 		frames++;
-		draw_frame();
+		draw_frame(deltaTime);
 		glfwPollEvents();
 	}
 

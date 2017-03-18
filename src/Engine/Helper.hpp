@@ -54,7 +54,8 @@ namespace VE
 		tr_cmd_pool* getCmdPool() const { return m_cmd_pool; }
 		tr_cmd** getCmds() const { return m_cmds; }
 		uint64_t getFrameCount() const { return s_frame_count; }
-		Game* getGame() const { return game; }
+		static void Quit();
+		
 
 	private:
 		Camera* camera = nullptr;
@@ -66,7 +67,6 @@ namespace VE
 
 		Input* input = nullptr;
 		SceneManager* scene_manager = nullptr;
-		Game* game = nullptr;
 	};
 
 	//structs

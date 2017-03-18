@@ -8,11 +8,12 @@ namespace VE
 		objects.push_back(object);
 	}
 
-	void Scene::Draw(tr_cmd* cmd)
+	void Scene::Draw(tr_cmd* cmd, float dt)
 	{
 		for(uint32_t i = 0; i < objects.size(); ++i)
 		{
 			objects[i]->Draw(cmd);
 		}
+		Update(dt);
 	}
 }
