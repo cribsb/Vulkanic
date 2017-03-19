@@ -1,6 +1,6 @@
 #pragma once
 #include "VEGameObject.h"
-#include "Helper.hpp"
+#include "VEngine.hpp"
 #include "VEShaderManager.h"
 #include "Mesh.h"
 #include <glm/detail/type_mat.hpp>

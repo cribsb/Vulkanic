@@ -1,6 +1,6 @@
 #pragma once
 #include "VESceneManager.h"
-#include "Helper.hpp"
+#include "VEngine.hpp"
 #include "VEInput.h"
 
 class SceneManager;

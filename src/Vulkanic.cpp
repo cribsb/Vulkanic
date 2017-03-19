@@ -6,7 +6,7 @@
 
 //#include <vld.h>
 
-#include "Engine/Helper.hpp"
+#include "Engine/VEngine.hpp"
 #include "Engine/VECamera.h"
 #include "Engine/VETexturedPlane.h"
 #include "Engine/VE3dmodel.h"
